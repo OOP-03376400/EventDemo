@@ -17,11 +17,9 @@ namespace eventtest1
         }
     }
 
-    delegate void Handler();
-
     class Incrementer
     {
-        public event Handler CountedADozen;
+        public event EventHandler CountedADozen;
 
         public void DoCount()
         {
@@ -29,7 +27,7 @@ namespace eventtest1
             {
                 if (i % 12 == 0 && CountedADozen != null)
                 {
-                    CountedADozen();
+                    CountedADozen(this, null);
                 }
             }
         }
@@ -45,7 +43,7 @@ namespace eventtest1
 
         }
 
-        private void IncrementDozensCount()
+        private void IncrementDozensCount(object source, EventArgs e)
         {
             DozensCount++;
             Console.WriteLine("Increment dozen: result = {0}", DozensCount);
