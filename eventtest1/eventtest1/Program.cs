@@ -17,17 +17,26 @@ namespace eventtest1
         }
     }
 
+    public class IncrementerEventArgs : EventArgs
+    {
+        public int IterationCount { get; set; }
+    }
+
+
     class Incrementer
     {
-        public event EventHandler CountedADozen;
+        public event EventHandler<IncrementerEventArgs>    CountedADozen;
 
         public void DoCount()
         {
+            IncrementerEventArgs args = new IncrementerEventArgs();
+
             for (int i = 0; i < 120; i++)
             {
                 if (i % 12 == 0 && CountedADozen != null)
                 {
-                    CountedADozen(this, null);
+                    args.IterationCount = i;
+                    CountedADozen(this, args);
                 }
             }
         }
@@ -43,10 +52,10 @@ namespace eventtest1
 
         }
 
-        private void IncrementDozensCount(object source, EventArgs e)
+        private void IncrementDozensCount(object source, IncrementerEventArgs e)
         {
             DozensCount++;
-            Console.WriteLine("Increment dozen: result = {0}", DozensCount);
+            Console.WriteLine("Increment at iteration {0} in {1}", e.IterationCount, source.ToString());
         }
     }
 
